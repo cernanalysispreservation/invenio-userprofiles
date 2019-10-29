@@ -15,6 +15,17 @@ from invenio_db import db
 from sqlalchemy import event
 from sqlalchemy.ext.hybrid import hybrid_property
 
+from sqlalchemy.dialects import postgresql
+from sqlalchemy_utils.types import JSONType
+
+json_type = JSONType().with_variant(
+    postgresql.JSONB(none_as_null=True),
+    'postgresql',
+).with_variant(
+    JSONType(),
+    'sqlite',
+)
+
 from .validators import validate_username
 
 
@@ -57,6 +68,10 @@ class UserProfile(db.Model):
 
     full_name = db.Column(db.String(255), nullable=False, default='')
     """Full name of person."""
+
+    extra_data = db.Column(json_type,
+                           default=lambda: {},
+                           nullable=True)
 
     @hybrid_property
     def username(self):
