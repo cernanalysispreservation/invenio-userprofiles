@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2015-2018 CERN.
+# Copyright (C) 2021      TU Wien.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -18,33 +19,26 @@ readme = open('README.rst').read()
 history = open('CHANGES.rst').read()
 
 tests_require = [
+    'pytest-invenio>=1.4.2',
     'SQLAlchemy-Continuum>=1.2.1',
-    'check-manifest>=0.25',
-    'coverage>=4.0',
-    'invenio-i18n>=1.0.0',
-    'isort>=4.2.2',
-    'pydocstyle>=1.0.0',
-    'pytest-cov>=1.8.0',
-    'pytest-pep8>=1.0.6',
-    'pytest>=3.8.0,<5.0.0',
 ]
 
 extras_require = {
     'admin': [
-        'invenio-admin>=1.0.0',
+        'invenio-admin>=1.2.0',
     ],
     'docs': [
-        'Sphinx>=1.4.2',
+        'Sphinx>=3.0.0,<3.4.2',
         'invenio-mail>=1.0.0',
     ],
     'mysql': [
-        'invenio-db[mysql]>=1.0.0',
+        'invenio-db[mysql]>=1.0.9',
     ],
     'postgresql': [
-        'invenio-db[postgresql]>=1.0.0',
+        'invenio-db[postgresql]>=1.0.9',
     ],
     'sqlite': [
-        'invenio-db>=1.0.0',
+        'invenio-db>=1.0.9',
     ],
     'tests': tests_require,
 }
@@ -61,15 +55,14 @@ setup_requires = [
 ]
 
 install_requires = [
-    'Flask-BabelEx>=0.9.3',
-    'Flask-Breadcrumbs>=0.3.0',
+    'Flask-Breadcrumbs>=0.5.0',
     'Flask-Mail>=0.9.1',
-    'Flask-Menu>=0.4.0',
-    'Flask-WTF>=0.13.1',
-    'Flask>=0.11.1',
-    'invenio-accounts>=1.0.0',
-    'Werkzeug>=0.14.1',
-    'WTForms>=2.0.1',
+    'Flask-Menu>=0.5.0',
+    'Flask-WTF>=0.14.3',
+    'invenio-accounts>=1.2.1',
+    'invenio-base>=1.2.5',
+    'invenio-i18n>=1.2.0',
+    'invenio-theme>=1.3.4',
 ]
 
 packages = find_packages()

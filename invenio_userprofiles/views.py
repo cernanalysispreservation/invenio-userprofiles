@@ -17,6 +17,8 @@ from flask_login import current_user, login_required
 from flask_menu import register_menu
 from flask_security.confirmable import send_confirmation_instructions
 from invenio_db import db
+from invenio_theme.proxies import current_theme_icons
+from speaklater import make_lazy_string
 
 from .api import current_userprofile
 from .forms import EmailProfileForm, ProfileForm, VerificationForm, \
@@ -79,8 +81,10 @@ def userprofile(value):
 @register_menu(
     blueprint, 'settings.profile',
     # NOTE: Menu item text (icon replaced by a user icon).
-    _('%(icon)s Profile', icon='<i class="fa fa-user fa-fw"></i>'),
-    order=0)
+    _('%(icon)s Profile', icon=make_lazy_string(
+        lambda: f'<i class="{current_theme_icons.user}"></i>')),
+    order=0
+)
 @register_breadcrumb(
     blueprint, 'breadcrumbs.settings.profile', _('Profile')
 )
@@ -91,8 +95,9 @@ def profile():
     profile_form = profile_form_factory()
 
     # Process forms
+    is_read_only = current_app.config.get("USERPROFILES_READ_ONLY", False)
     form = request.form.get('submit', None)
-    if form == 'profile':
+    if form == 'profile' and not is_read_only:
         handle_profile_form(profile_form)
     elif form == 'verification':
         handle_verification_form(verification_form)
@@ -132,6 +137,9 @@ def handle_verification_form(form):
 
 def handle_profile_form(form):
     """Handle profile update form."""
+    if current_app.config.get("USERPROFILES_READ_ONLY", False):
+        return
+
     form.process(formdata=request.form)
 
     if form.validate_on_submit():
